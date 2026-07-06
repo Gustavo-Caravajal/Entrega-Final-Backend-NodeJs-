@@ -28,4 +28,6 @@ app.use(notFound);
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
-app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+//app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+
+export default app;
