@@ -154,3 +154,219 @@ npm run dev
 - **Parámetros:**
     - `id` (path, requerido): ID del producto a eliminar.
 - **Respuesta:** 204 No Content 
+
+## Actualizar un producto
+
+* **PUT** `/products/:id`
+
+* **Descripción:** Actualiza la información de un producto existente.
+
+* **Parámetros:**
+
+  * `id` (path, requerido): ID del producto a modificar.
+
+* **Body (JSON):**
+
+```json
+{
+    "title": "Notebook Lenovo IdeaPad 5",
+    "price": 950000,
+    "categories": [
+        "Tecnología",
+        "Computadoras",
+        "Notebooks"
+    ]
+}
+```
+
+* **Respuesta ejemplo:**
+
+```json
+{
+    "id": "1",
+    "title": "Notebook Lenovo IdeaPad 5",
+    "price": 950000,
+    "categories": [
+        "Tecnología",
+        "Computadoras",
+        "Notebooks"
+    ]
+}
+```
+
+---
+
+# Autenticación
+
+La API utiliza autenticación mediante JWT (JSON Web Token).
+
+Las rutas protegidas requieren enviar el token en el header `Authorization` utilizando el formato:
+
+```
+Authorization: Bearer TOKEN
+```
+
+Ejemplo:
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+```
+
+---
+
+# Usuarios
+
+## Registrar usuario
+
+* **POST** `/auth/register`
+* **Descripción:** Registra un nuevo usuario en el sistema.
+* **Body (JSON):**
+
+```json
+{
+    "email": "usuario@email.com",
+    "password": "123456"
+}
+```
+
+* **Respuesta ejemplo:**
+
+```json
+{
+    "id": "abc123",
+    "email": "usuario@email.com"
+}
+```
+
+* **Errores posibles:**
+
+### 422 Unprocessable Entity
+
+Cuando faltan datos requeridos.
+
+```json
+{
+    "error": "Email y contraseña son requeridos"
+}
+```
+
+### 409 Conflict
+
+Cuando el usuario ya existe.
+
+```json
+{
+    "error": "El usuario ya existe"
+}
+```
+
+---
+
+## Login de usuario
+
+* **POST** `/auth/login`
+
+* **Descripción:** Autentica un usuario y devuelve un token JWT para acceder a las rutas protegidas.
+
+* **Body (JSON):**
+
+```json
+{
+    "email": "usuario@email.com",
+    "password": "123456"
+}
+```
+
+* **Respuesta ejemplo:**
+
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+}
+```
+
+* **Errores posibles:**
+
+### 401 Unauthorized
+
+Credenciales inválidas.
+
+```json
+{
+    "error": "Email o contraseña incorrectos"
+}
+```
+
+---
+
+# Manejo de errores
+
+La API utiliza códigos HTTP para indicar el resultado de las operaciones.
+
+## 400 Bad Request
+
+La petición contiene datos inválidos o incompletos.
+
+Ejemplo:
+
+```json
+{
+    "error": "Datos inválidos"
+}
+```
+
+---
+
+## 401 Unauthorized
+
+El usuario no está autenticado o no envió un token válido.
+
+Ejemplo:
+
+```json
+{
+    "error": "Token no proporcionado"
+}
+```
+
+---
+
+## 403 Forbidden
+
+El usuario está autenticado pero no tiene permisos suficientes para realizar la operación.
+
+Ejemplo:
+
+```json
+{
+    "error": "Acceso denegado"
+}
+```
+
+---
+
+## 404 Not Found
+
+La ruta o recurso solicitado no existe.
+
+Ejemplo:
+
+```json
+{
+    "error": "Not Found"
+}
+```
+
+---
+
+## 500 Internal Server Error
+
+Error inesperado del servidor o fallo de un servicio externo.
+
+Ejemplo:
+
+```json
+{
+    "error": "Error interno del servidor"
+}
+```
